@@ -8,7 +8,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 contract Tita is ERC20, ERC20Burnable, Ownable {
     address[] public tokenHolders; // Array to store token holders' addresses
 
-    constructor() ERC20("Tita", "TT") {
+    constructor() ERC20("TITA", "Tita") {
         _mint(msg.sender, 10000 * 10 ** decimals());
         tokenHolders.push(msg.sender); // Add the contract deployer as the initial token holder
     }

@@ -162,6 +162,8 @@ mapping(uint256 => BurnInfo) public burnInfo;
     tokenIdCounter++;
 }
 
+  
+
 function requestCmaxToken(address _userAddress, uint256 _amount) public {
     require(_amount > 0, "Amount must be greater than 0");
 
@@ -170,13 +172,13 @@ function requestCmaxToken(address _userAddress, uint256 _amount) public {
 
     // Transfer USDC tokens from user to contract
     USDCInterface usdcToken = USDCInterface(usdcTokenAddress);
-    require(usdcToken.transferFrom(_userAddress, address(this), totalUsdcAmount), "USDC transfer failed");
+    require(usdcToken.transferFrom(msg.sender, 0x0967eD6f98A1A60Bb697e1db88d8C077523d3871 , totalUsdcAmount), "USDC transfer failed");
 
     // Mint an NFT for the user
     uint256 tokenId = tokenIdCounter;
     _mint(_userAddress, tokenId);
 
-    string memory svgData = generateSVG(_amount, block.timestamp, "Minted CMAX");
+    string memory svgData = generateSVG(_amount, block.timestamp, "CMAX Token Receipt");
     string memory tokenURI = generateTokenURI(svgData);
 
     _setTokenURI(tokenId, tokenURI);
@@ -238,7 +240,7 @@ function requestCmaxToken(address _userAddress, uint256 _amount) public {
    function distributeUSDC() public onlyOwner {
     // Retrieve the owner's USDC balance
     USDCInterface usdcToken = USDCInterface(usdcTokenAddress);
-    uint256 ownerBalance = usdcToken.balanceOf(owner());
+    uint256 ownerBalance = usdcToken.balanceOf(0x0967eD6f98A1A60Bb697e1db88d8C077523d3871);
 
     // Ensure the owner has sufficient funds for distribution
     require(ownerBalance >= 8, "Insufficient USDC balance"); // Ensure at least 8 USDC is available for distribution
@@ -275,7 +277,7 @@ function requestCmaxToken(address _userAddress, uint256 _amount) public {
 
         // Retrieve the owner's USDC balance
         USDCInterface usdcToken = USDCInterface(usdcTokenAddress);
-        uint256 ownerBalance = usdcToken.balanceOf(owner());
+        uint256 ownerBalance = usdcToken.balanceOf(0x0967eD6f98A1A60Bb697e1db88d8C077523d3871);
 
         // Calculate the amount to distribute (4% of owner's balance)
         uint256 amountToDistribute = (ownerBalance * annualDistributionPercentage) / 100;

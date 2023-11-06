@@ -5,11 +5,16 @@ import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
 contract Coliseum is ERC20, Ownable {
+    uint256 public maxSupply = 1000000000 * 10 ** decimals(); // 1 billion tokens
+    uint256 public totalMinted;
+
     constructor() ERC20("COLISEUM", "CMAX") {
-        _mint(msg.sender, 100000 * 10 ** decimals());
+        totalMinted = 0;
     }
 
-    function mint(address to, uint256 amount) public  {
+    function mint(address to, uint256 amount) public {
+        require(totalMinted + amount <= maxSupply, "Exceeds max supply");
         _mint(to, amount);
+        totalMinted += amount;
     }
 }

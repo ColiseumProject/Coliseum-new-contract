@@ -3,6 +3,29 @@ const { ethers } = require('hardhat');
 
 
 async function main() {
+
+    // Deploy NFT contract
+    const TokenRequest = await hre.ethers.getContractFactory("TokenRequest");
+    const tokenRequest = await TokenRequest.deploy("Token Receipt","TB","0x9525e3F33fDC428291AB8ae261C5AEe41adBeE1E","0xFEca406dA9727A25E71e732F9961F680059eF1F9", ethers.BigNumber.from("1").div(10)  , "0x361E9351a5A16Fd742A30a1c53880B85A4c23929");
+    await tokenRequest.deployed();
+    const confirmations = 5; // You can adjust this number as needed
+    await Promise.all([
+      tokenRequest.deployTransaction.wait(confirmations),
+    ]);
+    console.log("TokenRequest deployed to:", tokenRequest.address);
+    await hre.run("verify:verify", {
+      address: tokenRequest.address,
+      constructorArguments: ["Token Receipt","TB","0x9525e3F33fDC428291AB8ae261C5AEe41adBeE1E","0xFEca406dA9727A25E71e732F9961F680059eF1F9", ethers.BigNumber.from("1").div(10)  , "0x361E9351a5A16Fd742A30a1c53880B85A4c23929"], // Add constructor arguments if any
+    });
+  
+
+   //Deploy Rsc Token
+   const Rsc = await hre.ethers.getContractFactory("Rsc");
+   const rsc = await Rsc.deploy();
+   await rsc.deployed();
+   console.log("Rsc ERC20 token deployed to:", rsc.address);
+ 
+   console.log("Deployment completed!");
  
 // Deploy Chainlink Contract
   const ChainlinkContract = await hre.ethers.getContractFactory("ChainlinkContract");
@@ -32,32 +55,13 @@ async function main() {
   const TitaToken = await hre.ethers.getContractFactory("Tita");
   const titaToken = await TitaToken.deploy();
   await titaToken.deployed();
-  console.log("Cmax deployed to:", titaToken.address);
+  console.log("Tita deployed to:", titaToken.address);
  
   
-  // Deploy NFT contract
-  const TokenRequest = await hre.ethers.getContractFactory("TokenRequest");
-  const tokenRequest = await TokenRequest.deploy("Token Receipt","TB","0xfada9a0f0C5735d3df5ca5B8a5f9B44766f1fCd8","0xe6b8a5cf854791412c1f6efc7caf629f5df1c747", ethers.BigNumber.from("1").div(10)  , "0x00f35860FA16166B0A83E4424807CAe4AFC69Faf");
-  await tokenRequest.deployed();
-  const confirmations = 5; // You can adjust this number as needed
-  await Promise.all([
-    tokenRequest.deployTransaction.wait(confirmations),
-  ]);
-  console.log("TokenRequest deployed to:", tokenRequest.address);
-  await hre.run("verify:verify", {
-    address: tokenRequest.address,
-    constructorArguments: ["Token Receipt","TB","0xfada9a0f0C5735d3df5ca5B8a5f9B44766f1fCd8","0xe6b8a5cf854791412c1f6efc7caf629f5df1c747", ethers.BigNumber.from("1").div(10) , "0x00f35860FA16166B0A83E4424807CAe4AFC69Faf"], // Add constructor arguments if any
-  });
 
 
 
-  //Deploy Rsc Token
-  const Rsc = await hre.ethers.getContractFactory("Rsc");
-  const rsc = await Rsc.deploy();
-  await rsc.deployed();
-  console.log("Rsc ERC20 token deployed to:", rsc.address);
-
-  console.log("Deployment completed!");
+  
 
 
 }
