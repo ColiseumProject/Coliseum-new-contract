@@ -6,7 +6,7 @@ async function main() {
 
     // Deploy NFT contract
     const TokenRequest = await hre.ethers.getContractFactory("TokenRequest");
-    const tokenRequest = await TokenRequest.deploy("Token Receipt","TB","0x9525e3F33fDC428291AB8ae261C5AEe41adBeE1E","0xFEca406dA9727A25E71e732F9961F680059eF1F9", ethers.BigNumber.from("1").div(10)  , "0x361E9351a5A16Fd742A30a1c53880B85A4c23929");
+    const tokenRequest = await TokenRequest.deploy("Token Receipt","TB","0x9525e3F33fDC428291AB8ae261C5AEe41adBeE1E","0xe6b8a5CF854791412c1f6EFC7CAf629f5Df1c747", ethers.BigNumber.from("1").div(10)  , "0x361E9351a5A16Fd742A30a1c53880B85A4c23929");
     await tokenRequest.deployed();
     const confirmations = 5; // You can adjust this number as needed
     await Promise.all([
@@ -15,7 +15,7 @@ async function main() {
     console.log("TokenRequest deployed to:", tokenRequest.address);
     await hre.run("verify:verify", {
       address: tokenRequest.address,
-      constructorArguments: ["Token Receipt","TB","0x9525e3F33fDC428291AB8ae261C5AEe41adBeE1E","0xFEca406dA9727A25E71e732F9961F680059eF1F9", ethers.BigNumber.from("1").div(10)  , "0x361E9351a5A16Fd742A30a1c53880B85A4c23929"], // Add constructor arguments if any
+      constructorArguments: ["Token Receipt","TB","0x9525e3F33fDC428291AB8ae261C5AEe41adBeE1E","0xe6b8a5CF854791412c1f6EFC7CAf629f5Df1c747", ethers.BigNumber.from("1").div(10)  , "0x361E9351a5A16Fd742A30a1c53880B85A4c23929"], // Add constructor arguments if any
     });
   
 

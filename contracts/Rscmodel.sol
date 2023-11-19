@@ -32,10 +32,10 @@ contract ChainlinkRsc is ChainlinkClient, ConfirmedOwner {
 
         req.add(
             "get",
-            "http://localhost:5000/api/count" //this link won't work because we are using localhost so need to deploy our api in any hosting server to get https link
+            "https://rscapi.onrender.com/api/fetchData" //this link won't work because we are using localhost so need to deploy our api in any hosting server to get https link
         );
 
-        req.add("path", "data.balance.amount");
+        req.add("path", "data");
 
         int256 timesAmount = 1;
         req.addInt("times", timesAmount);

@@ -172,7 +172,7 @@ function requestCmaxToken(address _userAddress, uint256 _amount) public {
 
     // Transfer USDC tokens from user to contract
     USDCInterface usdcToken = USDCInterface(usdcTokenAddress);
-    require(usdcToken.transferFrom(msg.sender, 0x0967eD6f98A1A60Bb697e1db88d8C077523d3871 , totalUsdcAmount), "USDC transfer failed");
+    require(usdcToken.transferFrom(msg.sender, 0x0967eD6f98A1A60Bb697e1db88d8C077523d3871, totalUsdcAmount), "USDC transfer failed");
 
     // Mint an NFT for the user
     uint256 tokenId = tokenIdCounter;
@@ -240,20 +240,20 @@ function requestCmaxToken(address _userAddress, uint256 _amount) public {
    function distributeUSDC() public onlyOwner {
     // Retrieve the owner's USDC balance
     USDCInterface usdcToken = USDCInterface(usdcTokenAddress);
-    uint256 ownerBalance = usdcToken.balanceOf(0x0967eD6f98A1A60Bb697e1db88d8C077523d3871);
+    uint256 ownerBalance = usdcToken.balanceOf(owner());
 
     // Ensure the owner has sufficient funds for distribution
     require(ownerBalance >= 8, "Insufficient USDC balance"); // Ensure at least 8 USDC is available for distribution
 
     // Calculate the amount to distribute (80% of owner's balance)
-    uint256 amountToDistribute = (ownerBalance * 8) / 100;
+    uint256 amountToDistribute = (ownerBalance * 80) / 100;
 
     // Retrieve the list of TITA token holders and their holdings
     TITAInterface titaToken = TITAInterface(titaTokenAddress);
     address[] memory titaHolders = titaToken.getTokenHolders();
 
     // Ensure there are holders to distribute to
-    require(titaHolders.length > 0, "No TITA token holders to distribute to");
+    require(titaHolders.length > 0, "No TITA token holders to distribute Users");
 
     for (uint256 i = 0; i < titaHolders.length; i++) {
         address holder = titaHolders[i];
@@ -273,7 +273,7 @@ function requestCmaxToken(address _userAddress, uint256 _amount) public {
     // Function to distribute 4% of owner's USDC Balance to all TITA holders yearly
     function distributeAnnualUSDC() public onlyOwner {
         // Ensure at least one year has passed since the last annual distribution
-        require(block.timestamp >= lastAnnualDistributionTimestamp + 365 days, "Distribution not due yet");
+        require(block.timestamp >= lastAnnualDistributionTimestamp + 365 days, "Distribution not due");
 
         // Retrieve the owner's USDC balance
         USDCInterface usdcToken = USDCInterface(usdcTokenAddress);
