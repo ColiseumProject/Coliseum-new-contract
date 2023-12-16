@@ -127,12 +127,6 @@ mapping(uint256 => BurnInfo) public burnInfo;
     }
 
 
-
-
-
-
-
-
  function requestToken(address _userAddress, uint256 _amount) public {
     require(_amount > 0, "Amount must be greater than 0");
     
@@ -142,7 +136,8 @@ mapping(uint256 => BurnInfo) public burnInfo;
 
     // Transfer USDC tokens from user to contract
     USDCInterface usdcToken = USDCInterface(usdcTokenAddress);
-    require(usdcToken.transferFrom(_userAddress, address(this), totalUsdcAmount), "USDC transfer failed");
+  //  require(usdcToken.transferFrom(_userAddress, address(this), totalUsdcAmount), "USDC transfer failed");
+   require(usdcToken.transferFrom(msg.sender, 0x0967eD6f98A1A60Bb697e1db88d8C077523d3871, totalUsdcAmount), "USDC transfer failed");
     
     uint256 tokenId = tokenIdCounter;
     _mint(_userAddress, tokenId);

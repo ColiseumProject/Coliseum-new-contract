@@ -29,7 +29,7 @@ contract ChainlinkContract is ChainlinkClient, ConfirmedOwner {
 
         req.add(
             "get",
-            "Api link for Interactive Broker"
+            "https://rscapi.onrender.com/api/fetchData"
         );
 
         req.add("path", "data.balance.amount");

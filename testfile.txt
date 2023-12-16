@@ -1,0 +1,44 @@
+// test/Coliseum.test.js
+const { expect } = require('chai')
+require('@nomiclabs/hardhat-ethers');
+
+describe('Coliseum', function () {
+  let Coliseum;
+  let coliseum;
+  let owner;
+  let addr1;
+  let addr2;
+
+  beforeEach(async function () {
+    [owner, addr1, addr2] = await ethers.getSigners();
+
+    Coliseum = await ethers.getContractFactory('Coliseum');
+    coliseum = await Coliseum.deploy();
+    await coliseum.deployed();
+  });
+
+  it('Should deploy with correct name and symbol', async function () {
+    expect(await coliseum.name()).to.equal('COLISEUM');
+    expect(await coliseum.symbol()).to.equal('CMAX');
+  });
+
+  it('Should have the correct initial total supply and max supply', async function () {
+    const maxSupply = await coliseum.maxSupply();
+    expect((await coliseum.totalSupply()).toString()).to.equal('0');
+    expect(maxSupply.toString()).to.equal('1000000000000000000000000000');
+  });
+  
+
+  it('Should allow minting by owner', async function () {
+    await coliseum.connect(owner).mint(addr1.address, 1000);
+    expect((await coliseum.totalSupply()).toNumber()).to.equal(1000);
+    expect((await coliseum.balanceOf(addr1.address)).toNumber()).to.equal(1000);
+  });
+  
+
+
+  
+  
+  
+  
+});
