@@ -15,6 +15,7 @@ contract TokenVesting is Ownable {
     }
 
     mapping(address => VestingDetails) public beneficiaries;
+    address[] public beneficiaryList;
 
     constructor(IERC20 _token) {
         token = _token;
@@ -46,11 +47,10 @@ contract TokenVesting is Ownable {
                 totalTokens: _totalTokens[i],
                 releasedTokens: 0
             });
+
+            beneficiaryList.push(beneficiary);
         }
     }
-
-
-
 
     function release() external {
         address beneficiary = msg.sender;
@@ -69,5 +69,21 @@ contract TokenVesting is Ownable {
         token.transfer(beneficiary, unreleasedTokens);
     }
 
+    function airdrop() external onlyOwner {
+        for (uint256 i = 0; i < beneficiaryList.length; i++) {
+            address beneficiary = beneficiaryList[i];
+            VestingDetails storage vestingDetails = beneficiaries[beneficiary];
 
+            if (vestingDetails.vestingStartTime > 0 && block.timestamp >= vestingDetails.vestingStartTime) {
+                uint256 elapsedTime = block.timestamp - vestingDetails.vestingStartTime;
+                uint256 vestedTokens = (elapsedTime * vestingDetails.totalTokens) / vestingDetails.vestingDuration;
+                uint256 unreleasedTokens = vestedTokens - vestingDetails.releasedTokens;
+
+                if (unreleasedTokens > 0) {
+                    vestingDetails.releasedTokens = vestedTokens;
+                    token.transfer(beneficiary, unreleasedTokens);
+                }
+            }
+        }
+    }
 }
