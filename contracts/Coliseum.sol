@@ -204,23 +204,6 @@ contract Coliseum is ERC20, Ownable {
         }
     }
 
-    function release() external {
-        address beneficiary = msg.sender;
-        VestingDetails storage vestingDetails = beneficiaries[beneficiary];
-
-        require(vestingDetails.vestingStartTime > 0, "Beneficiary not found");
-        require(block.timestamp >= vestingDetails.vestingStartTime, "Vesting has not started yet");
-
-        uint256 elapsedTime = block.timestamp - vestingDetails.vestingStartTime;
-        uint256 vestedTokens = (elapsedTime * vestingDetails.totalTokens) / vestingDetails.vestingDuration;
-        uint256 unreleasedTokens = vestedTokens - vestingDetails.releasedTokens;
-
-        require(unreleasedTokens > 0, "No tokens left to release");
-
-        vestingDetails.releasedTokens = vestedTokens;
-        _transfer(address(this), beneficiary, unreleasedTokens);
-    }
-
 function airdrop() external onlyOwner {
 
   for (uint256 i = 0; i < beneficiaryList.length; i++) {
